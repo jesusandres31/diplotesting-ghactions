@@ -14,7 +14,7 @@ export default defineConfig([
       eqeqeq: ['error', 'always'],
       'no-var': 'error',
       'prefer-const': 'error',
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       curly: 'error',
       'no-debugger': 'error',
       'no-empty': 'warn',

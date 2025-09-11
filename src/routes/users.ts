@@ -1,8 +1,28 @@
 import { Router, Request, Response } from 'express';
+import rateLimit from 'express-rate-limit';
 import db from '../libs/db';
 import { User } from '../types';
 
+// Rate limiter for DELETE /users/:id
+const deleteUserLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 delete requests per windowMs
+  message: { error: 'Too many delete requests, please try again later.' },
+});
+
 const router = Router();
+
+// Configure rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // 100 requests per windowMs per IP
+  standardHeaders: 'draft-7', // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+// Apply rate limiting to all routes in this router
+router.use(limiter);
 
 /**
  * GET /users - List all users
@@ -13,7 +33,9 @@ router.get('/', (req: Request, res: Response) => {
     res.json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).json({ error: 'Failed to fetch users' });
+    res.status(500).json({
+      error: 'Failed to fetch users',
+    });
   }
 });
 
@@ -27,13 +49,17 @@ router.get('/:id', (req: Request, res: Response) => {
       .get(req.params.id);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({
+        error: 'User not found',
+      });
     }
 
     res.json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
-    res.status(500).json({ error: 'Failed to fetch user' });
+    res.status(500).json({
+      error: 'Failed to fetch user',
+    });
   }
 });
 
@@ -46,7 +72,9 @@ router.post('/', (req: Request, res: Response) => {
 
     // Validate input
     if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+      return res.status(400).json({
+        error: 'Name and email are required',
+      });
     }
 
     const result = db
@@ -62,7 +90,9 @@ router.post('/', (req: Request, res: Response) => {
     res.status(201).json(newUser);
   } catch (error) {
     console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Failed to create user' });
+    res.status(500).json({
+      error: 'Failed to create user',
+    });
   }
 });
 
@@ -84,7 +114,9 @@ router.put('/:id', (req: Request, res: Response) => {
     // Check if user exists
     const user = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({
+        error: 'User not found',
+      });
     }
 
     // Update only the fields that are provided
@@ -116,29 +148,37 @@ router.put('/:id', (req: Request, res: Response) => {
     res.json(user);
   } catch (error) {
     console.error('Error updating user:', error);
-    res.status(500).json({ error: 'Failed to update user' });
+    res.status(500).json({
+      error: 'Failed to update user',
+    });
   }
 });
 
 /**
  * DELETE /users/:id - Delete a user
  */
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', deleteUserLimiter, (req: Request, res: Response) => {
   try {
     const id = req.params.id;
 
     // Check if user exists
     const user = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({
+        error: 'User not found',
+      });
     }
 
     db.prepare('DELETE FROM users WHERE id = ?').run(id);
 
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(200).json({
+      message: 'User deleted successfully',
+    });
   } catch (error) {
     console.error('Error deleting user:', error);
-    res.status(500).json({ error: 'Failed to delete user' });
+    res.status(500).json({
+      error: 'Failed to delete user',
+    });
   }
 });
 
