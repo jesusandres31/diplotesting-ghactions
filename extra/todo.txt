@@ -1,0 +1,9 @@
+crear repo
+clonar
+
+project overview 
+
+pnpm install 
+pnpm run dev
+
+rest client

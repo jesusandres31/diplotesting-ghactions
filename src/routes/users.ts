@@ -1,28 +1,9 @@
 import { Router, Request, Response } from 'express';
-import rateLimit from 'express-rate-limit';
 import db from '../libs/db';
 import { User } from '../types';
-
-// Rate limiter for DELETE /users/:id
-const deleteUserLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 10 delete requests per windowMs
-  message: { error: 'Too many delete requests, please try again later.' },
-});
+import { deleteUserLimiter } from '../middleware';
 
 const router = Router();
-
-// Configure rate limiter
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  limit: 100, // 100 requests per windowMs per IP
-  standardHeaders: 'draft-7', // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: { error: 'Too many requests, please try again later.' },
-});
-
-// Apply rate limiting to all routes in this router
-router.use(limiter);
 
 /**
  * GET /users - List all users
