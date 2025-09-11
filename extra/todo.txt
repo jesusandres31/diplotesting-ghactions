@@ -7,3 +7,8 @@ pnpm install
 pnpm run dev
 
 rest client
+
+first commit
+
+do a change 
+commit it 
