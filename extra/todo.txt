@@ -1,16 +1,23 @@
 crear repo and clonar
 
-project overview:
-    pnpm install 
-    pnpm run dev 
-    rest client
+project overview
+
+pnpm install 
+pnpm run dev 
+
+rest client
 
 first commit
 
-do a change 
-commit it 
+--- 
 
-add codeql to main
+do a change
+create branch   
+create PR
+
+---
+
+add codeql to main -> .github/workflows
 
 create new branch and show success codeql
 
@@ -20,7 +27,7 @@ gh actions pannel
 
 ---
 
-preggier 
+prettier 
 
 ---
 
