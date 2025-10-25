@@ -1,11 +1,9 @@
 crear repo and clonar
 
 project overview:
-    pnpm install
-
-pnpm install 
-pnpm run dev 
-rest client
+    pnpm install 
+    pnpm run dev 
+    rest client
 
 first commit
 
