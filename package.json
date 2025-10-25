@@ -8,8 +8,7 @@
     "format": "prettier --write .",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/src/index.js",
-    "prepare": "husky"
+    "start": "node dist/src/index.js"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,7 @@
 crear repo and clonar
 
-project overview 
+project overview:
+    pnpm install
 
 pnpm install 
 pnpm run dev 
@@ -18,3 +19,26 @@ create new branch and show success codeql
 create new branch and show error codeql
 
 gh actions pannel
+
+---
+
+preggier 
+
+---
+
+eslint
+
+--- 
+
+husky
+```
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write .",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/src/index.js",
+    "prepare": "husky"
+  },
+```
